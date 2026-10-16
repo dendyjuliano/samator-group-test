@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BDAF911C-AFE8-407D-957A-3F1150718E75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samator.CylinderTracker.Api", "src\Samator.CylinderTracker.Api\Samator.CylinderTracker.Api.csproj", "{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6C75CE52-D3C0-4C3E-AC2E-0981758CA1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samator.CylinderTracker.Api.Tests", "tests\Samator.CylinderTracker.Api.Tests\Samator.CylinderTracker.Api.Tests.csproj", "{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{18AE0E0E-9A33-4894-BFA1-4F5BAAB25C67} = {BDAF911C-AFE8-407D-957A-3F1150718E75}
+		{95C62FC3-0FA6-40D3-95E8-77E325CF6FD0} = {6C75CE52-D3C0-4C3E-AC2E-0981758CA1C7}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,355 @@
+{
+  "info": {
+    "name": "Samator Cylinder Tracker API",
+    "description": "ASP.NET Core Web API (.NET 8) for tracking gas cylinder lifecycle. Import this file directly in Postman: File > Import.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5199" },
+    { "key": "cylinderId", "value": "1", "description": "Set this to a real id returned by List/Create before running id-based requests" }
+  ],
+  "item": [
+    {
+      "name": "List",
+      "item": [
+        {
+          "name": "List cylinders (default)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List - search (unicode, case-insensitive)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?search=östara",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "search", "value": "östara" }]
+            }
+          }
+        },
+        {
+          "name": "List - search (apostrophe)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?search=o'brien",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "search", "value": "o'brien" }]
+            }
+          }
+        },
+        {
+          "name": "List - filter by status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?status=Filled",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "status", "value": "Filled" }]
+            }
+          }
+        },
+        {
+          "name": "List - page 2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?page=2&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [
+                { "key": "page", "value": "2" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List - page past the end (empty items, still 200)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?page=999&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [
+                { "key": "page", "value": "999" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List - invalid page (expect 400)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?page=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "page", "value": "0" }]
+            }
+          }
+        },
+        {
+          "name": "List - invalid pageSize (expect 400)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?pageSize=51",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "pageSize", "value": "51" }]
+            }
+          }
+        },
+        {
+          "name": "List - invalid status (expect 400)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders?status=NotARealStatus",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"],
+              "query": [{ "key": "status", "value": "NotARealStatus" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get by id",
+      "item": [
+        {
+          "name": "Get cylinder by id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get cylinder by id - not found (expect 404)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "999999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create",
+      "item": [
+        {
+          "name": "Create cylinder (expect 201)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"cyl-123456\",\n  \"gasType\": \"Oxygen\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create - duplicate serial (expect 409)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"cyl-123456\",\n  \"gasType\": \"Oxygen\"\n}"
+            },
+            "description": "Run 'Create cylinder' first, then run this again with the same serialNumber to see the 409."
+          }
+        },
+        {
+          "name": "Create - invalid serial format (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"CYL-5\",\n  \"gasType\": \"Oxygen\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create - invalid gas type (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"CYL-654321\",\n  \"gasType\": \"Helium\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update",
+      "item": [
+        {
+          "name": "Update cylinder (expect 200)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"CYL-654322\",\n  \"gasType\": \"Argon\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update - not found (expect 404)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "999999"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serialNumber\": \"CYL-654323\",\n  \"gasType\": \"Argon\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change status",
+      "item": [
+        {
+          "name": "Change status - Empty to Filled (expect 200)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Filled\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Change status - Filled to Delivered with customerName (expect 200)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Delivered\",\n  \"customerName\": \"PT Sinar O'Brien Medika\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Change status - Delivered without customerName (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Delivered\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Change status - invalid transition Retired to Filled (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/{{cylinderId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "{{cylinderId}}", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Filled\"\n}"
+            },
+            "description": "Set {{cylinderId}} to a cylinder whose current status is Retired before running this, to see the 400."
+          }
+        },
+        {
+          "name": "Change status - not found (expect 404)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/cylinders/999999/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cylinders", "999999", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Empty\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
